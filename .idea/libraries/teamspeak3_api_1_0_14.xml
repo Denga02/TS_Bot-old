@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="teamspeak3-api-1.0.14">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Libaies/teamspeak3-api-1.0.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
