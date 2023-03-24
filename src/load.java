@@ -47,6 +47,7 @@ public class load { ;
         while(true) {
             LOGGER.info("active");
             TimeUnit.SECONDS.sleep(10);
+            LOGGER.info("active");
 
 
         }
