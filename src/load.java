@@ -7,58 +7,101 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
+import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
+import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+public class load {
+    // connection and query values
+    public static String ADD_GIB = "62.104.20.81";
+    public static String ADD_LOCAL = "127.0.0.1";
 
-public class load { ;
-    private static final Logger LOGGER = Logger.getLogger("MyLogger");
+    public static int PORT_GIB = 10126;
+
+    public static String QUERRY_NAME_GIB = "dannybot";
+    public static String QUERRY_PASS_GIB= "OTWcNvID";
+    public static String QUERRY_NAME_LCOAL = "serveradmin";
+    public static String QUERRY_PASS_LCOAL = "RXuslTQ+";
+
+    public static int PORT_4_NET_PLAYERS = 11200;
+    public static int PORT_STANDARD_QUERY = 10011;
+
+    // unic ID of all important clients
+    private static Object[] LEADER_UID = new Object[] {
+            "test", "OL5KWACbqz8EnaM0rxTHr+Wrqs0=",
+            "stefan", "7W1wETArO8qz/l3JRUwKhv9+KqU=",
+            "danny", "5zhq99hN4UhkqB4pMIeStd8SDf4="
+    };
+
+
+    final public static TS3Config config = new TS3Config();
+    final public static TS3Query query = new TS3Query(config);
+    final public static TS3Api api = query.getApi();
+
     public static void main(String[] args) throws InterruptedException {
 
-        //Standard Config üfr den Query Bot
-        Config.config.setHost(variablen.gib.addresse); //10126
-        Config.config.setQueryPort(variablen.query_ports.four_net_players);
-        Config.query.connect();
-        Config.api.login(variablen.gib.query_name, variablen.gib.query_pass);
-        Config.api.selectVirtualServerByPort(variablen.gib.port);
-        Config.api.setNickname("Clanbot");
+        //config and connection
+        config.setHost(ADD_GIB); //10126
+        config.setQueryPort(PORT_4_NET_PLAYERS);
+        query.connect();
+        api.login(QUERRY_NAME_GIB, QUERRY_PASS_GIB);
+        api.selectVirtualServerByPort(PORT_GIB);
+        api.setNickname("Clanbot");
 
-        // Laden der verschiedenen Methoden und Klassen
-        event.loadevent();
-        ChatBot.loader();
-        /*
-        afk_mover.loader_afk(variablen.gib.afk);
-        afk_mover.loader_eingang(variablen.gib.willkommen, variablen.gib.afk);
-        */
-        bot_connection.ping();
-        conncetion_info.online();
-        Support.loader(variablen.gib.support, variablen.gib.kommandant,variablen.gib.stellvertreter, variablen.gib.perso);
-        Support.message(variablen.gib.support,variablen.gib.kommandant, variablen.gib.perso, variablen.gib.stellvertreter);
-        afk_mover.loader_afk(variablen.gib.afk);
-        afk_mover.loader_eingang(variablen.gib.willkommen, variablen.gib.afk);
-
-        LOGGER.info("Bot ist online");
-
-
-
-
-        while(true) {
-            LOGGER.info("active");
-            TimeUnit.SECONDS.sleep(10);
-            LOGGER.info("active");
-
-
+        // gather Information
+        //
+        // get all channel ids
+        for (Channel channel : map.Channel_List) {
+            String name = channel.getName();
+            int id = channel.getId();
+            map.Channel_ID.put(name, id);
         }
 
+        // get all Channel Server Group and Ids
+        for (ServerGroup serverGroup : map.server_Groups) {
+            map.Server_Group_ID_Map.put(serverGroup.getName(), serverGroup.getId());
+        }
 
-        
+        // get all online players unic ID
+        for (Client client : map.online_clients) {
+            String name = client.getNickname();
+            String uniqueId = client.getUniqueIdentifier();
+            map.online_client_UID_Map.put(name, uniqueId);
+        }
+
+        // notify all users that bot is online
+        logger.getLogger().info("bot is online");
+        logger.getLogger().info(String.format("players online: %s", String.join(", ", map.online_client_UID_Map.keySet())));
+
+        for (String  player_name : map.online_client_UID_Map.keySet()) {
+            Client client = api.getClientByNameExact(player_name, false);
+            if (client != null) {
+                //api.sendPrivateMessage(client.getId(), "Der Bot ist online.");
+            }
+        }
+
+        mover.room_afk("╚Irgendwann wieder da");
+        mover.room_welcome("Willkommen", "╚Irgendwann wieder da");
+
+        // laods all methods
+        //event.loadevent();
+        //ChatBot.loader();
+        //bot_connection.ping();
+        //conncetion_info.online();
+        //Support.loader(variablen.gib.support, variablen.gib.kommandant,variablen.gib.stellvertreter, variablen.gib.perso);
+        //Support.message(variablen.gib.support,variablen.gib.kommandant, variablen.gib.perso, variablen.gib.stellvertreter);
+
+        //query.exit();
+
     }
 }
 
 
-
+/*
 class bot_connection
 {
     // get ID from bot
@@ -118,14 +161,8 @@ class conncetion_info {
 
 };
 
-class Config
-{
-    public static final TS3Config config = new TS3Config();
-    public static final TS3Query query = new TS3Query(config);
-    public static final TS3Api api = query.getApi();
+ */
 
-
-}
 
 
 

@@ -8,23 +8,23 @@ import java.util.TimerTask;
 public class Support {
     public static void loader(int Raum, int Gruppe1, int Gruppe2, int Gruppe3)
     {
-        Config.api.registerAllEvents();
-        Config.api.addTS3Listeners(new TS3EventAdapter() {
+        load.api.registerAllEvents();
+        load.api.addTS3Listeners(new TS3EventAdapter() {
             @Override
             public void onClientMoved(ClientMovedEvent e) {
                 //super.onClientMoved(e);
-                Client c = Config.api.getClientInfo(e.getClientId());
+                Client c = load.api.getClientInfo(e.getClientId());
                 if (e.getTargetChannelId() == Raum) {
                     boolean value = false;
-                    for (Client sup : Config.api.getClients()) {
+                    for (Client sup : load.api.getClients()) {
                         if (sup.isInServerGroup(Gruppe1) || sup.isInServerGroup(Gruppe2) || sup.isInServerGroup(Gruppe3)){
                             value = true;
-                            Config.api.pokeClient(sup.getId(), "[URL=client://" + c.getChannelId() + "/" + c.getIp() + "]" + c.getNickname() + "[/URL] braucht Support!");
+                            load.api.pokeClient(sup.getId(), "[URL=client://" + c.getChannelId() + "/" + c.getIp() + "]" + c.getNickname() + "[/URL] braucht Support!");
                         }
                     } if (value) {
-                        Config.api.pokeClient(c.getId(), "Es wurden Leute aus der Leitung benachrichtigt!");
+                        load.api.pokeClient(c.getId(), "Es wurden Leute aus der Leitung benachrichtigt!");
                     } else {
-                        Config.api.pokeClient(c.getId(), "Zurzeit ist keiner dar, der dir helfen kann");
+                        load.api.pokeClient(c.getId(), "Zurzeit ist keiner dar, der dir helfen kann");
                     }
                 }
             }
@@ -40,14 +40,14 @@ public class Support {
             @Override
             public void run() {
                 boolean val = false;
-                for (Client c : Config.api.getClients()) {
+                for (Client c : load.api.getClients()) {
                     if (c.isInServerGroup(Gruppe1) || c.isInServerGroup(Gruppe2) || c.isInServerGroup(Gruppe3)){
                         val = true;
                     } else {
                         val = false;
                     }
-                    if (Config.api.getChannelInfo(Raum).getSecondsEmpty() == -1 && val == true) {
-                        Config.api.pokeClient(c.getId(), "[URL=client://" + c.getChannelId() + "/" + c.getIp() + "]" + c.getNickname() + "[/URL] braucht Support!");
+                    if (load.api.getChannelInfo(Raum).getSecondsEmpty() == -1 && val == true) {
+                        load.api.pokeClient(c.getId(), "[URL=client://" + c.getChannelId() + "/" + c.getIp() + "]" + c.getNickname() + "[/URL] braucht Support!");
                     }
                 }
             }

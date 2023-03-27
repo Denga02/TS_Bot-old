@@ -5,8 +5,8 @@ public class event {
 
     public static void loadevent() {
 
-        Config.api.registerAllEvents();
-        Config.api.addTS3Listeners(new TS3Listener() {
+        load.api.registerAllEvents();
+        load.api.addTS3Listeners(new TS3Listener() {
             @Override
             public void onTextMessage(TextMessageEvent textMessageEvent) {
 
@@ -15,12 +15,12 @@ public class event {
 
             @Override
             public void onClientJoin(ClientJoinEvent e) {
-                Client c = Config.api.getClientInfo(e.getClientId());
-                Config.api.sendPrivateMessage(c.getId(), "Willkommen [B]"+c.getNickname()+"[/B]!" +
+                Client c =load.api.getClientInfo(e.getClientId());
+                load.api.sendPrivateMessage(c.getId(), "Willkommen [B]"+c.getNickname()+"[/B]!" +
                         "Dienstag, Mittwoch und Donnerstag wollen wir Bollwerk fahren\n");
 
                 if (c.isInServerGroup(4290234)) {
-                    Config.api.moveClient(c.getId(), variablen.gib.support);
+                    load.api.moveClient(c.getId(), map.Server_Group_ID_Map.get("support"));
                 }
             }
 
