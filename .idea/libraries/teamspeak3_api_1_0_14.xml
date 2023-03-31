@@ -2,6 +2,7 @@
   <library name="teamspeak3-api-1.0.14">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../Libaies/teamspeak3-api-1.0.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Liberies/teamspeak3-api-1.3.1-with-dependencies.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

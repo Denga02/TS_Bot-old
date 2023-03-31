@@ -1,0 +1,8 @@
+Mar 31, 2023 12:37:52 PM load main
+INFO: bot is online
+Mar 31, 2023 12:37:52 PM load main
+INFO: players online: xxxPORTHOSxxx Thomas, ohri/steffen, Karsten/Kaschik, Clanbot_Test1, Shark2114 ( Florian ), Stefan, keeeekS|Lucas, Diamond_Jozu / Jonas
+Mar 31, 2023 12:37:55 PM mover room_welcome
+CONFIG: mover.room_welcome -> src 6853632
+Mar 31, 2023 12:37:55 PM mover room_welcome
+CONFIG: mover.room_welcome -> out 13939590

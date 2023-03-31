@@ -42,7 +42,12 @@ public class load {
     final public static TS3Query query = new TS3Query(config);
     final public static TS3Api api = query.getApi();
 
+    //logger
+    public static final Logger logger = PublicLogger.getLogger();
+
     public static void main(String[] args) throws InterruptedException {
+
+
 
         //config and connection
         config.setHost(ADD_GIB); //10126
@@ -50,7 +55,7 @@ public class load {
         query.connect();
         api.login(QUERRY_NAME_GIB, QUERRY_PASS_GIB);
         api.selectVirtualServerByPort(PORT_GIB);
-        api.setNickname("Clanbot");
+        api.setNickname("Clanbot_Test1");
 
         // gather Information
         //
@@ -74,8 +79,8 @@ public class load {
         }
 
         // notify all users that bot is online
-        logger.getLogger().info("bot is online");
-        logger.getLogger().info(String.format("players online: %s", String.join(", ", map.online_client_UID_Map.keySet())));
+        logger.info("bot is online");
+        logger.info(String.format("players online: %s", String.join(", ", map.online_client_UID_Map.keySet())));
 
         for (String  player_name : map.online_client_UID_Map.keySet()) {
             Client client = api.getClientByNameExact(player_name, false);
@@ -86,6 +91,7 @@ public class load {
 
         mover.room_afk("╚Irgendwann wieder da");
         mover.room_welcome("Willkommen", "╚Irgendwann wieder da");
+
 
         // laods all methods
         //event.loadevent();
