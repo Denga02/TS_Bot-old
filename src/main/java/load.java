@@ -12,6 +12,7 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,25 +38,20 @@ public class load {
             "danny", "5zhq99hN4UhkqB4pMIeStd8SDf4="
     };
 
-
     final public static TS3Config config = new TS3Config();
     final public static TS3Query query = new TS3Query(config);
     final public static TS3Api api = query.getApi();
 
-    //logger
-    public static final Logger logger = PublicLogger.getLogger();
-
     public static void main(String[] args) throws InterruptedException {
-
-
-
+        // config logger
+        PublicLogger.configLogging();
         //config and connection
         config.setHost(ADD_GIB); //10126
         config.setQueryPort(PORT_4_NET_PLAYERS);
         query.connect();
         api.login(QUERRY_NAME_GIB, QUERRY_PASS_GIB);
         api.selectVirtualServerByPort(PORT_GIB);
-        api.setNickname("Clanbot_Test1");
+        api.setNickname("Clanbot_Test");
 
         // gather Information
         //
@@ -79,8 +75,8 @@ public class load {
         }
 
         // notify all users that bot is online
-        logger.info("bot is online");
-        logger.info(String.format("players online: %s", String.join(", ", map.online_client_UID_Map.keySet())));
+        PublicLogger.logger.info("bot is online");
+        PublicLogger.logger.info(String.format("players online: %s", String.join(", ", map.online_client_UID_Map.keySet())));
 
         for (String  player_name : map.online_client_UID_Map.keySet()) {
             Client client = api.getClientByNameExact(player_name, false);
@@ -91,6 +87,15 @@ public class load {
 
         mover.room_afk("╚Irgendwann wieder da");
         mover.room_welcome("Willkommen", "╚Irgendwann wieder da");
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                PublicLogger.logger.info("is active");
+            }
+        }, 60*1000, 5*60*1000);
 
 
         // laods all methods

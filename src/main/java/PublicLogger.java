@@ -2,8 +2,9 @@ import java.io.IOException;
 import java.util.logging.*;
 
 public class PublicLogger {
-    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private static final FileHandler fileHandler;
+    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static final FileHandler fileHandler;
+    public static final Handler consoleHandler = new ConsoleHandler();
 
     static {
         try {
@@ -13,20 +14,19 @@ public class PublicLogger {
         }
     }
 
-    public static Logger getLogger() {
-
+    public static void configLogging() {
         logger.setLevel(Level.ALL);
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        logger.addHandler(handler);
+        logger.setUseParentHandlers(false);
 
-        SimpleFormatter simpleFormatter = new SimpleFormatter();
-        fileHandler.setFormatter(simpleFormatter);
+        logger.addHandler(consoleHandler);
+        consoleHandler.setLevel(Level.ALL);
+        consoleHandler.setFormatter(new SimpleFormatter());
+
         logger.addHandler(fileHandler);
+        fileHandler.setLevel(Level.ALL);
+        fileHandler.setFormatter(new SimpleFormatter());
 
 
-
-
-        return logger;
     }
+
 }

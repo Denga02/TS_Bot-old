@@ -30,8 +30,7 @@ public class mover {
     }
 
     public static void room_welcome (String room_src, String room_out) {;
-        load.logger.config(String.format("mover.room_welcome -> src %d", map.Channel_ID.get(room_src)));
-        load.logger.config(String.format("mover.room_welcome -> out %d", map.Channel_ID.get(room_out)));
+        PublicLogger.logger.config(String.format("mover.room_welcome -> src %d", map.Channel_ID.get(room_src)));
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
