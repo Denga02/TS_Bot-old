@@ -51,7 +51,7 @@ public class load {
         query.connect();
         api.login(QUERRY_NAME_GIB, QUERRY_PASS_GIB);
         api.selectVirtualServerByPort(PORT_GIB);
-        api.setNickname("Clanbot_Test");
+        api.setNickname("Clanbot_Test1");
 
         // gather Information
         //
@@ -90,7 +90,6 @@ public class load {
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
-
             @Override
             public void run() {
                 PublicLogger.logger.info("is active");
