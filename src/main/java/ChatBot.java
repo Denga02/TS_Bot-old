@@ -23,8 +23,8 @@ public class ChatBot {
 
 
                     switch (message) {
-                        case "!hallo":
-                            load.api.sendPrivateMessage(e.getInvokerId(),"Hallo zurück");
+                        case "!aus":
+                            load.query.exit();
                             break;
                         case "!kevin":
                             //variablen.counters.kevin_counter++;

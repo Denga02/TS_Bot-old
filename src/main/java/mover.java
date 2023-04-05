@@ -21,7 +21,7 @@ public class mover {
                     if (client.isOutputMuted() && afk_room == false){
                             if (client.getIdleTime() > 15 * 60 * 1000 && client.getIdleTime() <  16 * 60 * 1000 ) {
                                 load.api.sendPrivateMessage(client.getId(), "AFK Warnung!");
-                            } else if (client.getIdleTime() > 2 * 60 * 1000) {
+                            } else if (client.getIdleTime() > 20 * 60 * 1000) {
                                 load.api.moveClient(client.getId(), map.Channel_ID.get(room_out));
                                 load.api.sendPrivateMessage(client.getId(), "Du warst zu lange Afk und wurdest in " +room_out+ " gemoved");
                             }

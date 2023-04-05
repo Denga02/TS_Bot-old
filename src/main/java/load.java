@@ -51,7 +51,8 @@ public class load {
         query.connect();
         api.login(QUERRY_NAME_GIB, QUERRY_PASS_GIB);
         api.selectVirtualServerByPort(PORT_GIB);
-        api.setNickname("Clanbot_Test1");
+        String nickname = "Clanbot";
+        api.setNickname(nickname);
 
         // gather Information
         //
@@ -80,13 +81,16 @@ public class load {
 
         for (String  player_name : map.online_client_UID_Map.keySet()) {
             Client client = api.getClientByNameExact(player_name, false);
-            if (client != null) {
-                //api.sendPrivateMessage(client.getId(), "Der Bot ist online.");
+            if (client != null && !Objects.equals(player_name, nickname)) {
+                PublicLogger.logger.fine(String.valueOf(client.getId()) + " " + player_name);
+                api.sendPrivateMessage(client.getId(), "Der Bot ist online.");
             }
         }
 
         mover.room_afk("╚Irgendwann wieder da");
         mover.room_welcome("Willkommen", "╚Irgendwann wieder da");
+        ChatBot.loader();
+
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
