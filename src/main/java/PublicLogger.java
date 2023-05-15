@@ -8,22 +8,22 @@ public class PublicLogger {
 
     static {
         try {
-            fileHandler = new FileHandler("Logfile.txt");
+            fileHandler = new FileHandler("logfile.txt");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static void configLogging() {
-        logger.setLevel(Level.ALL);
+        logger.setLevel(Level.INFO);
         logger.setUseParentHandlers(false);
 
         logger.addHandler(consoleHandler);
-        consoleHandler.setLevel(Level.ALL);
+        consoleHandler.setLevel(Level.INFO);
         consoleHandler.setFormatter(new SimpleFormatter());
 
         logger.addHandler(fileHandler);
-        fileHandler.setLevel(Level.ALL);
+        fileHandler.setLevel(Level.INFO);
         fileHandler.setFormatter(new SimpleFormatter());
 
 

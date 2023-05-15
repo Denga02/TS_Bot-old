@@ -5,6 +5,7 @@ import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 public class ChatBot {
+    /*
     public static void loader() {
         final int clientId = load.api.whoAmI().getId();
 
@@ -85,5 +86,8 @@ class changelog
                 + "Afk Mover: es werden jetzt auch User in AFK gemoved, die länger als 2 Minuten in der Eingangshalle sitzen"
                 );
     }
+
+
+     */
 
 }

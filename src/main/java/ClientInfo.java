@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientInfo {
+    /*
     public static void loader_test(int ID) {
         // List all clients in the console
         List<Channel> channels = load.api.getChannels();
@@ -43,4 +44,6 @@ public class ClientInfo {
             System.out.println(c.getNickname() + " in channel " + channel.getName());
         }
     }
+
+     */
 }

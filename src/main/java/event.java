@@ -2,6 +2,7 @@ import com.github.theholywaffle.teamspeak3.api.event.*;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 public class event {
+    /*
 
     public static void loadevent() {
 
@@ -76,5 +77,7 @@ public class event {
         });
 
     }
+
+     */
 
 }

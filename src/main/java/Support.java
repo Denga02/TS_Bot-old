@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Support {
+    /*
     public static void loader(int Raum, int Gruppe1, int Gruppe2, int Gruppe3)
     {
         load.api.registerAllEvents();
@@ -53,4 +54,6 @@ public class Support {
             }
         }, 1000, 5*60*1000);
     }
+
+     */
 }
