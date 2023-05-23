@@ -23,18 +23,12 @@ public class main {
         load.setup();
 
         PublicLogger.logger.info("Bot is online");
+        api.moveClient(api.getClientByNameExact("Test", false),api.getChannelByNameExact("Default Channel", false));
+        api.moveClient(api.getClientByNameExact("Test", false),api.getChannelByNameExact("Willkommen", false));
 
-
-        // laods all methods
-        mover.room_afk("╚Irgendwann wieder da");
-        //mover.room_welcome("Willkommen", "╚Irgendwann wieder da");
+        mover.afkMover(false, null, 3, true, "╚Irgendwann wieder da");
+        mover.afkMover(true, "Willkommen", 1, false, "╚Irgendwann wieder da");
         //ChatBot.loader();
-
-
-
-
-
-
         //event.loadevent();
         //ChatBot.loader();
         //bot_connection.ping();
@@ -45,7 +39,21 @@ public class main {
         //query.exit();
 
     }
+
+    // Hilfsmethode, um den Kanalnamen anhand der Kanal-ID abzurufen
+    public static String getChannelNameById(int channelId) {
+        List<Channel> channels = api.getChannels();
+        for (Channel channel : channels) {
+            if (channel.getId() == channelId) {
+                return channel.getName();
+            }
+        }
+        return null; // Wenn kein Kanal mit der angegebenen ID gefunden wurde
+    }
 }
+
+
+
 
 
 /*

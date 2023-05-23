@@ -88,6 +88,6 @@ class changelog
     }
 
 
-     */
 
+     */
 }
