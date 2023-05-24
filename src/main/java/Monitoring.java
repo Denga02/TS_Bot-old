@@ -6,11 +6,49 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Monitoring {
     public static void handleMessages() {
+
+        // Get our own client ID by running the "whoami" command
+        final int clientId = main.api.whoAmI().getId();
+
+        main.api.registerEvent(TS3EventType.TEXT_PRIVATE);
+
+        // Register the event listener
+        main.api.addTS3Listeners(new TS3EventAdapter() {
+
+            @Override
+            public void onTextMessage(TextMessageEvent e) {
+                // Only react to channel messages not sent by the query itself
+                if (e.getTargetMode() == TextMessageTargetMode.CLIENT && e.getInvokerId() != clientId) {
+                    String message = e.getMessage().toLowerCase();
+
+                    if (message.equals("!ping")) {
+                        // Answer "!ping" with "pong"
+                        main.api.sendPrivateMessage(e.getInvokerId(), "pong");
+                }
+            }
+        }
+    });
+    }
+
+    public static void base_monitoring () {
+        // basic monitroing to control, if the bot is online
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PublicLogger.logger.info("is active");
+            }
+        }, 60*1000, 30*60*1000);
     }
 }
+
+
 
 
 

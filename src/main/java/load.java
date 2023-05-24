@@ -31,15 +31,8 @@ public class load {
 
 
     public static void setup() {
-
-        // basic monitroing to control, if the bot is online
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                PublicLogger.logger.info("is active");
-            }
-        }, 60*1000, 30*60*1000);
+        //config logger
+        PublicLogger.configLogging();
 
         //notify all clients that bot is online
         for (Client c : main.api.getClients()) {
@@ -48,5 +41,6 @@ public class load {
                 main.api.sendPrivateMessage(c.getId(),"Bot ist online");
             }
         }
+        PublicLogger.logger.info("Bot is online");
     }
 }

@@ -55,10 +55,11 @@ public class mover {
                         }
                     }
                 }
-            private int convert_config_to_number() {
+            private int convert_config_to_number(){
                 int number = 0;
-                if (roomRequired) { number += 1;}
-                if (!roomRequired) { number += 2;}
+                if (roomRequired) {
+                    number += 1;}
+                if (!roomRequired) {number += 2;}
                 if (muteRequired) {number += 4;}
                 if (!muteRequired) {number += 7;}
                 return number;
@@ -70,9 +71,7 @@ public class mover {
                 logClientMove(client.getNickname(), moveRoom);
             }
 
-            private void moveClientToRoom(Client client, String moveRoom)
-            {
-
+            private void moveClientToRoom(Client client, String moveRoom) {
                 int clientId = client.getId();
                 main.api.moveClient(clientId, main.api.getChannelByNameExact(moveRoom, false).getId());
             }
