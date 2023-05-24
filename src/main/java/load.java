@@ -3,8 +3,10 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 public class load {
+    private static final Logger logger = PublicLogger.getLogger();
 
 
     public static void conncet_gib(String bot_name) {
@@ -41,6 +43,6 @@ public class load {
                 main.api.sendPrivateMessage(c.getId(),"Bot ist online");
             }
         }
-        PublicLogger.logger.info("Bot is online");
+        logger.info("Bot is online");
     }
 }

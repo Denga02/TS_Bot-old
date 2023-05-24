@@ -8,9 +8,11 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 
 public class Monitoring {
+    private static final Logger logger = PublicLogger.getLogger();
     public static void handleMessages() {
 
         // Get our own client ID by running the "whoami" command
@@ -42,7 +44,7 @@ public class Monitoring {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                PublicLogger.logger.info("is active");
+                logger.info("is active");
             }
         }, 60*1000, 30*60*1000);
     }

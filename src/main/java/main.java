@@ -7,6 +7,7 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 
@@ -14,6 +15,7 @@ public class main {
     final public static TS3Config config = new TS3Config();
     public static TS3Query query;
     public static TS3Api api;
+    private static final Logger logger = PublicLogger.getLogger();
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -27,12 +29,6 @@ public class main {
 
         //first setup, by starting the bot
         load.setup();
-
-        for (int i = 0; i < 10; i++) {
-            PublicLogger.logger.info("Test");
-            Thread.sleep(1000);
-        }
-
 
         // functions for Monitoring
         Monitoring.base_monitoring();

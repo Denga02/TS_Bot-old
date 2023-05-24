@@ -6,35 +6,28 @@ import java.util.Date;
 import java.util.logging.*;
 
 public class PublicLogger {
-    public static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    public static final Handler consoleHandler = new ConsoleHandler();
-    public static FileHandler fileHandler;
-    public static String logFileName;
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Handler consoleHandler = new ConsoleHandler();
+    private static FileHandler fileHandler;
+    private static String logFileName;
+
+    private static final long LOG_FILE_UPDATE_INTERVAL = 300000; // 5 minutes = 300,000 milliseconds
+    private static final long ONE_WEEK_IN_MILLIS = 7 * 24 * 60 * 60 * 1000; // 1 week = 7 days = 7 * 24 * 60 * 60 * 1000 milliseconds
 
     public static void configLogging() {
+        configureLogger();
+        createNewLogFile();
+
+        startLogFileUpdateThread();
+    }
+
+    private static void configureLogger() {
         logger.setLevel(Level.INFO);
         logger.setUseParentHandlers(false);
 
-        logger.addHandler(consoleHandler);
         consoleHandler.setLevel(Level.INFO);
         consoleHandler.setFormatter(new SimpleFormatter());
-
-        createNewLogFile();
-
-        // Start the log file update thread
-        Thread logFileUpdateThread = new Thread(() -> {
-            try {
-                while (true) {
-                    fileHandler.flush();
-                    checkAndCreateNewLogFile();
-                    Thread.sleep(300000); // 5 minutes = 300,000 milliseconds
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        logFileUpdateThread.setDaemon(true);
-        logFileUpdateThread.start();
+        logger.addHandler(consoleHandler);
     }
 
     private static void createNewLogFile() {
@@ -44,13 +37,28 @@ public class PublicLogger {
 
         try {
             fileHandler = new FileHandler(logFileName);
+            fileHandler.setLevel(Level.INFO);
+            fileHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(fileHandler);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to create log file handler: " + e.getMessage(), e);
         }
+    }
 
-        fileHandler.setLevel(Level.INFO);
-        fileHandler.setFormatter(new SimpleFormatter());
-        logger.addHandler(fileHandler);
+    private static void startLogFileUpdateThread() {
+        Thread logFileUpdateThread = new Thread(() -> {
+            try {
+                while (true) {
+                    fileHandler.flush();
+                    checkAndCreateNewLogFile();
+                    Thread.sleep(LOG_FILE_UPDATE_INTERVAL);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        logFileUpdateThread.setDaemon(true);
+        logFileUpdateThread.start();
     }
 
     private static void checkAndCreateNewLogFile() {
@@ -58,13 +66,16 @@ public class PublicLogger {
         if (Files.exists(logFilePath)) {
             try {
                 long fileAge = System.currentTimeMillis() - Files.getLastModifiedTime(logFilePath).toMillis();
-                long oneWeekInMillis = 7 * 24 * 60 * 60 * 1000; // 1 week = 7 days = 7 * 24 * 60 * 60 * 1000 milliseconds
-                if (fileAge >= oneWeekInMillis) {
+                if (fileAge >= ONE_WEEK_IN_MILLIS) {
                     createNewLogFile();
                 }
             } catch (IOException e) {
                 logger.warning("Failed to create new log file: " + e.getMessage());
             }
         }
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 }

@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 public class mover {
+    private static final Logger logger = PublicLogger.getLogger();
     public static void afkMover(boolean roomRequired, String targetRoom, long maxIdleTime, boolean muteRequired, String moveRoom) {
         final int minutes = 60 * 1000;
         final int TIMER_DELAY_MS = 1000;
@@ -83,7 +85,7 @@ public class mover {
 
             private void logClientMove(String nickname, String room)
             {
-                PublicLogger.logger.info("move user " + nickname + " in " + room);
+                logger.info("move user " + nickname + " in " + room);
             }
 
         }, TIMER_DELAY_MS, TIMER_PERIOD_MS);
