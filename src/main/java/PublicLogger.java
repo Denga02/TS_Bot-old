@@ -11,13 +11,15 @@ public class PublicLogger {
     private static FileHandler fileHandler;
     private static String logFileName;
 
-    private static final long LOG_FILE_UPDATE_INTERVAL = 300000; // 5 minutes = 300,000 milliseconds
-    private static final long ONE_WEEK_IN_MILLIS = 7 * 24 * 60 * 60 * 1000; // 1 week = 7 days = 7 * 24 * 60 * 60 * 1000 milliseconds
+    // 5 minutes = 300,000 milliseconds
+    private static final long LOG_FILE_UPDATE_INTERVAL = 300000;
+
+    // 1 week = 7 days = 7 * 24 * 60 * 60 * 1000 milliseconds
+    private static final long CREATE_NEW_LOGFILE_INTERVAL = 7 * 24 * 60 * 60 * 1000;
 
     public static void configLogging() {
         configureLogger();
         createNewLogFile();
-
         startLogFileUpdateThread();
     }
 
@@ -66,7 +68,7 @@ public class PublicLogger {
         if (Files.exists(logFilePath)) {
             try {
                 long fileAge = System.currentTimeMillis() - Files.getLastModifiedTime(logFilePath).toMillis();
-                if (fileAge >= ONE_WEEK_IN_MILLIS) {
+                if (fileAge >= CREATE_NEW_LOGFILE_INTERVAL) {
                     createNewLogFile();
                 }
             } catch (IOException e) {

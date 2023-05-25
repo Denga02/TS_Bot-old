@@ -38,7 +38,7 @@ public class Monitoring {
     });
     }
 
-    public static void base_monitoring () {
+    public static void baseMonitoring () {
         // basic monitroing to control, if the bot is online
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {

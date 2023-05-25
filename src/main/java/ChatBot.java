@@ -4,90 +4,112 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
-public class ChatBot {
-    /*
-    public static void loader() {
-        final int clientId = load.api.whoAmI().getId();
+import java.io.IOException;
 
-        load.api.registerEvent(TS3EventType.TEXT_SERVER);
-        load.api.addTS3Listeners(new TS3EventAdapter() {
+public class ChatBot {
+
+    public static void handleMessages() {
+
+
+        // Get our own client ID by running the "whoami" command
+        final int clientId = main.api.whoAmI().getId();
+
+        main.api.registerEvent(TS3EventType.TEXT_PRIVATE);
+
+        // Register the event listener
+        main.api.addTS3Listeners(new TS3EventAdapter() {
+
             @Override
             public void onTextMessage(TextMessageEvent e) {
-                super.onTextMessage(e);
 
+                // Only react to channel messages not sent by the query itself
                 if (e.getTargetMode() == TextMessageTargetMode.CLIENT && e.getInvokerId() != clientId) {
-                    Client c = load.api.getClientInfo(e.getInvokerId());
-                    int channel = c.getChannelId();
-
                     String message = e.getMessage().toLowerCase();
-                    load.api.moveClient(clientId, channel);
-
 
                     switch (message) {
-                        case "!aus":
-                            load.query.exit();
-                            break;
                         case "!kevin":
-                            //variablen.counters.kevin_counter++;
-                            //load.api.sendChannelMessage("Finn! Brünette mit fetten Hupen ist für dich unterwegs\n"
-                            //+ "Kevin war wieder rallig! Zum " + variablen.counters.kevin_counter + ". mal kam heute eine Nutte vorbei!");
-                            break;
-                        case "!online":
-                            ClientInfo.loader_produktiv(e.getInvokerId());
+                            printKevin();
                             break;
                         case "!steven":
-                            //variablen.counters.steven_counter++;
-                            //load.api.sendChannelMessage("Abgelehnt!!\n" +
-                            //"Du bist der " + variablen.counters.steven_counter + ". der fragt...");
+                            printSteven();
                             break;
                         case "!stefan":
-                            load.api.sendChannelMessage("Bin mal essen!");
+                            main.api.sendChannelMessage("Bin mal essen!");
                             break;
                         case "!help":
-                            load.api.sendPrivateMessage(e.getInvokerId(),
-                                    "Überischt aller Befehle:\n" +
-                                    "!help --> gibt eine Übersicht aller Befehle\n" +
-                                    "!online --> Auskunft wer alles online ist und im welchen Channel sich der User befindet\n" +
-                                    "!kevin | !steven | !stefan | !chief | !karsten | !jonas --> nutzen auf eigene Gefahr"
-                                    );
+                            printHelp(e.getInvokerId());
                             break;
                         case "!chief" :
-                            load.api.sendChannelMessage("Micha sagt: Wir haben CHieftain noch zuhause!!");
+                            main.api.sendChannelMessage("Micha sagt: Wir haben CHieftain noch zuhause!!");
                             break;
                         case "!danny" :
-                            load.api.sendChannelMessage("Kaaaarsten!!");
+                            main.api.sendChannelMessage("Kaaaarsten!!");
                             break;
                         case "!karsten":
-                            load.api.sendChannelMessage("Dannnnnnny!!");
+                            main.api.sendChannelMessage("Dannnnnnny!!");
                             break;
                         case "!jonas" :
-                            load.api.sendChannelMessage("WAAAS!!");
+                            main.api.sendChannelMessage("WAAAS!!");
                             break;
                         case "!patchnotes" :
-                            changelog.patch(e.getInvokerId());
+                            printChangeLog(e.getInvokerId());
                             break;
                         default:
-                            load.api.sendPrivateMessage(e.getInvokerId(), "Falscher Befehl! gebe !help ein, um alle Befehle einzusehen");
+                            main.api.sendPrivateMessage(e.getInvokerId(), "Falscher Befehl! gebe !help ein, um alle Befehle einzusehen");
                     }
                 }
             }
+            private void printHelp(int id) {
+                main.api.sendPrivateMessage(id, """
+                        Überischt aller Befehle:
+                        !help --> gibt eine Übersicht aller Befehle
+                        !online --> Auskunft wer alles online ist und im welchen Channel sich der User befindet
+                        !kevin | !steven | !stefan | !chief | !karsten | !jonas --> nutzen auf eigene Gefahr"""
+                );
+            }
+
+            private void printChangeLog(int id) {
+                main.api.sendPrivateMessage(id, """
+                        Version 1.2
+                        Überischt aller Befehle:
+                        !help --> gibt eine Übersicht aller Befehle
+                        !online --> Auskunft wer alles online ist und im welchen Channel sich der User befindet
+                        !kevin | !steven | !stefan | !chief | !karsten | !jonas --> nutzen auf eigene Gefahr"""
+                );
+            }
+
+            private void printKevin() {
+                // loads variables from config.json
+                try {
+                    Configuration configuration = Configuration.load("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
+                    int counterKevin = configuration.getCounter().getKevin();
+
+                    main.api.sendChannelMessage("Kevin! Brünette mit fetten Hupen ist für dich unterwegs\n"
+                            + "Kevin war wieder rallig! Zum " + counterKevin + ". mal kam heute eine Nutte vorbei!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            private void printSteven() {
+                // loads variables from config.json
+                try {
+                    Configuration configuration = Configuration.load("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
+                    int counterSteven = configuration.getCounter().getSteven();
+
+                    Configuration.CounterConfig counterConfig = configuration.getCounter();
+                    counterConfig.setKevin(counterConfig.getSteven() + 1);
+                    configuration.save("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
+
+                    main.api.sendChannelMessage("Abgelehnt!!\n" +
+                            "Du bist der " + counterSteven + ". der fragt...");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         });
     }
-}
-
-class changelog
-{
-    public static void patch (int ID)
-    {
-        load.api.sendPrivateMessage(ID,"Version 1.2");
-        load.api.sendPrivateMessage(ID,
-                "ChatBot: weitere Befehle wurden hinzugefügt. Um eine Übersicht zu bekommen, gebe im ChatBot !help ein\n"
-                + "Support: Es gibt nun einen Support Raum, wenn man in diesen Channel beitrit bekommen alle aus der Leitung eine Benachrichtigung, dass jemand Support braucht\n"
-                + "Afk Mover: es werden jetzt auch User in AFK gemoved, die länger als 2 Minuten in der Eingangshalle sitzen"
-                );
-    }
 
 
 
-     */
 }

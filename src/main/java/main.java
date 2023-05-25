@@ -5,6 +5,7 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3Listener;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -19,24 +20,32 @@ public class main {
 
     public static void main(String[] args) throws InterruptedException {
 
+
+
+
         //random bot because of reconncetion issues
         Random rand = new Random();
         int randomNumber = rand.nextInt(100) + 1;
-        String bot_name = "Bot" + randomNumber;
+        String nickname = "Bot" + randomNumber;
 
         //loading bot with a specific authentification
-        load.conncet_local(bot_name);
+        load.conncet_local(nickname);
 
         //first setup, by starting the bot
         load.setup();
 
         // functions for Monitoring
-        Monitoring.base_monitoring();
+        Monitoring.baseMonitoring();
         Monitoring.handleMessages();
 
         //functions for afk mover
         mover.afkMover(false, null, 3, true, "╚Irgendwann wieder da");
         mover.afkMover(true, "Willkommen", 1, false, "╚Irgendwann wieder da");
+
+        //function for chatbot
+        ChatBot.handleMessages();
+
+
 
     }
 
