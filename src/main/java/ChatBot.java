@@ -91,22 +91,21 @@ public class ChatBot {
                 }
             }
             private void printSteven() {
-                // loads variables from config.json
                 try {
                     Configuration configuration = Configuration.load("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
                     int counterSteven = configuration.getCounter().getSteven();
 
                     Configuration.CounterConfig counterConfig = configuration.getCounter();
-                    counterConfig.setKevin(counterConfig.getSteven() + 1);
+                    counterConfig.setSteven(counterConfig.getSteven() + 1);
+                    configuration.setCounter(counterConfig);
                     configuration.save("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
 
                     main.api.sendChannelMessage("Abgelehnt!!\n" +
-                            "Du bist der " + counterSteven + ". der fragt...");
+                            "Du bist der " + (counterSteven + 1) + ". der fragt...");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
         });
     }
 
