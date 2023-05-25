@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class Configuration {
+    //class for the config.json file
+    //gives all important methods
     private CounterConfig counter;
 
     public static Configuration load(String filePath) throws IOException {

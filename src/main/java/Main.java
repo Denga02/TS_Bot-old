@@ -1,54 +1,43 @@
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3Config;
 import com.github.theholywaffle.teamspeak3.TS3Query;
-import com.github.theholywaffle.teamspeak3.api.event.TS3Listener;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
-import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
-import static java.lang.Thread.sleep;
-
-public class main {
+public class Main {
     final public static TS3Config config = new TS3Config();
     public static TS3Query query;
     public static TS3Api api;
     private static final Logger logger = PublicLogger.getLogger();
 
-    public static void main(String[] args) throws InterruptedException {
-
-
-
-        //random bot because of reconncetion issues
+    public Main(String[] args) throws InterruptedException {
+        //random bot because of reconnection issues
         Random rand = new Random();
         int randomNumber = rand.nextInt(100) + 1;
         String nickname = "Bot" + randomNumber;
 
-        //loading bot with a specific authentification
-        load.conncet_local(nickname);
+        //loading bot with a specific authentication
+        Load.conncetLocal(nickname);
 
         //first setup, by starting the bot
-        load.setup();
+        Load.setup();
 
         // functions for Monitoring
         Monitoring.baseMonitoring();
         Monitoring.handleMessages();
 
         //functions for afk mover
-        mover.afkMover(false, null, 3, true, "╚Irgendwann wieder da");
-        mover.afkMover(true, "Willkommen", 1, false, "╚Irgendwann wieder da");
+        Mover.afkMover(false, null, 3, true, "╚Irgendwann wieder da");
+        Mover.afkMover(true, "Willkommen", 1, false, "╚Irgendwann wieder da");
 
         //function for chatbot
         ChatBot.handleMessages();
-
-
-
     }
 
-    // Hilfsmethode, um den Kanalnamen anhand der Kanal-ID abzurufen
+    //method to get channel name through channel ID
     public static String getChannelNameById(int channelId) {
         List<Channel> channels = api.getChannels();
         for (Channel channel : channels) {
@@ -56,7 +45,7 @@ public class main {
                 return channel.getName();
             }
         }
-        // Wenn kein Kanal mit der angegebenen ID gefunden wurde
+        //return null if the don´t find channel with this ID
         return null;
     }
 }

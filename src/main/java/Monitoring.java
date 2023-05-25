@@ -16,12 +16,12 @@ public class Monitoring {
     public static void handleMessages() {
 
         // Get our own client ID by running the "whoami" command
-        final int clientId = main.api.whoAmI().getId();
+        final int clientId = Main.api.whoAmI().getId();
 
-        main.api.registerEvent(TS3EventType.TEXT_PRIVATE);
+        Main.api.registerEvent(TS3EventType.TEXT_PRIVATE);
 
         // Register the event listener
-        main.api.addTS3Listeners(new TS3EventAdapter() {
+        Main.api.addTS3Listeners(new TS3EventAdapter() {
 
             @Override
             public void onTextMessage(TextMessageEvent e) {
@@ -31,7 +31,7 @@ public class Monitoring {
 
                     if (message.equals("!ping")) {
                         // Answer "!ping" with "pong"
-                        main.api.sendPrivateMessage(e.getInvokerId(), "pong");
+                        Main.api.sendPrivateMessage(e.getInvokerId(), "pong");
                 }
             }
         }

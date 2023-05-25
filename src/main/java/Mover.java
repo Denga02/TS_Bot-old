@@ -6,7 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Logger;
 
-public class mover {
+public class Mover {
     private static final Logger logger = PublicLogger.getLogger();
     public static void afkMover(boolean roomRequired, String targetRoom, long maxIdleTime, boolean muteRequired, String moveRoom) {
         final int minutes = 60 * 1000;
@@ -17,11 +17,11 @@ public class mover {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                List<Client> clients = main.api.getClients();
+                List<Client> clients = Main.api.getClients();
                 for (Client client : clients) {
                     if (!client.isServerQueryClient()) {
 
-                        String clientRoom = main.getChannelNameById(client.getChannelId());
+                        String clientRoom = Main.getChannelNameById(client.getChannelId());
                         long idleTime = client.getIdleTime();
                         boolean isMuted = client.isOutputMuted();
 
@@ -75,12 +75,12 @@ public class mover {
 
             private void moveClientToRoom(Client client, String moveRoom) {
                 int clientId = client.getId();
-                main.api.moveClient(clientId, main.api.getChannelByNameExact(moveRoom, false).getId());
+                Main.api.moveClient(clientId, Main.api.getChannelByNameExact(moveRoom, false).getId());
             }
 
             private void sendMoveMessage(int clientId, String room)
             {
-                main.api.sendPrivateMessage(clientId, "Du warst zu lange Afk und wurdest in " + room + " gemoved");
+                Main.api.sendPrivateMessage(clientId, "Du warst zu lange Afk und wurdest in " + room + " gemoved");
             }
 
             private void logClientMove(String nickname, String room)
