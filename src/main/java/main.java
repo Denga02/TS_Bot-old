@@ -22,7 +22,6 @@ public class main {
 
 
 
-
         //random bot because of reconncetion issues
         Random rand = new Random();
         int randomNumber = rand.nextInt(100) + 1;
