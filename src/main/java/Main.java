@@ -2,6 +2,7 @@ import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3Config;
 import com.github.theholywaffle.teamspeak3.TS3Query;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
+import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
 
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,7 @@ public class Main {
     public static TS3Api api;
     private static final Logger logger = PublicLogger.getLogger();
 
-    public Main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         //random bot because of reconnection issues
         Random rand = new Random();
         int randomNumber = rand.nextInt(100) + 1;
@@ -25,16 +26,30 @@ public class Main {
         //first setup, by starting the bot
         Load.setup();
 
-        // functions for Monitoring
+        List<ServerGroup> channelGroups = Main.api.getServerGroups();
+
+        for (ServerGroup group : channelGroups) {
+            System.out.println("Gruppenname: " + group.getName() + ", Gruppen-ID: " + group.getId());
+        }
+
+        //method for Monitoring
         Monitoring.baseMonitoring();
         Monitoring.handleMessages();
 
-        //functions for afk mover
+        //method for afk mover
         Mover.afkMover(false, null, 3, true, "╚Irgendwann wieder da");
         Mover.afkMover(true, "Willkommen", 1, false, "╚Irgendwann wieder da");
 
-        //function for chatbot
+        //method for chatbot
         ChatBot.handleMessages();
+
+        //method for user support
+        int [] serverGroupId = {7, 4, 3};
+        Support.load(api.getChannelByNameExact("Support", false).getId(), serverGroupId);
+
+        //methods for event handler
+        EventHandler.notifyOnJoin("Support", 9);
+        //EventHandler.ClientJoinServer("Support", 9);
     }
 
     //method to get channel name through channel ID
