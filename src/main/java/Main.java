@@ -21,7 +21,8 @@ public class Main {
         String nickname = "Bot" + randomNumber;
 
         //loading bot with a specific authentication
-        Load.conncetLocal(nickname);
+        //Load.conncetLocal(nickname);
+        Load.conncetGib(nickname);
 
         //first setup, by starting the bot
         Load.setup();

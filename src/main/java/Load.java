@@ -9,6 +9,7 @@ public class Load {
 
     public static void conncetGib(String botName) {
         Main.config.setHost("62.104.20.81"); //10126
+        Main.config.setQueryPort(11200);
         Main.query = new TS3Query(Main.config);
         Main.query.connect();
         Main.api = Main.query.getApi();
