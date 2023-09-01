@@ -69,11 +69,11 @@ public class ChatBot {
             }
             private void printChangeLog(int id) {
                 Main.api.sendPrivateMessage(id, """
-                        Version 1.3
+                        Version 1.4
                         Code wurde gerefactored, dazu einige Bug fixes.
                         Der Afk Mover gibt nun keine Warnung mehr aus und wird nach 20 Minuten den user in den Afk Raum moven
                         Die funktionen des Chatbots sind wieder da. Für den Fall, dass Danny angezeigt wird statt der Bot,
-                        einfach den chat schließen und den aktuellen Channel getBot schreiben
+                        muss einmal in Willkommen connceten, um eine Nachricht vom Bot zu bekommen. An besseren MEthoden wird bereits gearbeitet
                         """
                 );
             }

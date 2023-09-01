@@ -24,9 +24,11 @@ public class Load {
         Main.query = new TS3Query(Main.config);
         Main.query.connect();
         Main.api = Main.query.getApi();
-        Main.api.login("bot", "68W6vEsH");
+        Main.api.login("serveradmin", "T8xQptXc");
         Main.api.selectVirtualServerById(1);
         Main.api.setNickname(botName);
+        //local Windwos: bot, 68W6vEsH
+        //Local Ubuntu: serveradmin, T8xQptXc
     }
 
 

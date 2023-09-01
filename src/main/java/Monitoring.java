@@ -30,6 +30,7 @@ public class Monitoring {
                     String message = e.getMessage().toLowerCase();
 
                     if (message.equals("!ping")) {
+                        Main.api.moveQuery(Main.api.getClientInfo(clientId).getChannelId());
                         // Answer "!ping" with "pong"
                         Main.api.sendPrivateMessage(e.getInvokerId(), "pong");
                 }

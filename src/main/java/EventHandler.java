@@ -1,6 +1,8 @@
+import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
 import com.github.theholywaffle.teamspeak3.api.event.ClientJoinEvent;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
+import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 public class EventHandler {
@@ -16,14 +18,6 @@ public class EventHandler {
                 String welcomeMessage = "Willkommen [B]" + client.getNickname() + "[/B]!";
                 Main.api.sendPrivateMessage(client.getId(), welcomeMessage);
 
-                // Überprüfen, ob der Client in der übergebenen Servergruppe ist
-                if (client.isInServerGroup(serverGroupId)) {
-                    // ID des Support-Raums abrufen
-                    int supportRoomId = Main.api.getChannelByNameExact(supportRoom, false).getId();
-
-                    // Client in den Support-Raum verschieben
-                    Main.api.moveClient(client.getId(), supportRoomId);
-                }
             }
         });
     }
