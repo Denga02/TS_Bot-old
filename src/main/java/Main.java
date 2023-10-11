@@ -1,6 +1,7 @@
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3Config;
 import com.github.theholywaffle.teamspeak3.TS3Query;
+import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
 
@@ -27,9 +28,6 @@ public class Main {
         //first setup, by starting the bot
         Load.setup();
 
-        //methods to manage the bot
-        Management.reboot();
-
         List<ServerGroup> channelGroups = Main.api.getServerGroups();
         for (ServerGroup group : channelGroups) {
             System.out.println("Gruppenname: " + group.getName() + ", Gruppen-ID: " + group.getId());
@@ -40,7 +38,7 @@ public class Main {
         Monitoring.handleMessages();
 
         //method for afk mover
-        Mover.afkMover(false, null, 3, true, "╚Irgendwann wieder da");
+        Mover.afkMover(false, null, 20, true, "╚Irgendwann wieder da");
         Mover.afkMover(true, "Willkommen", 1, false, "╚Irgendwann wieder da");
 
         //method for chatbot

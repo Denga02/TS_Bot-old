@@ -1,4 +1,5 @@
 import com.github.theholywaffle.teamspeak3.TS3Query;
+import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 import java.util.logging.Logger;
@@ -10,6 +11,9 @@ public class Load {
     public static void conncetGib(String botName) {
         Main.config.setHost("62.104.20.81"); //10126
         Main.config.setQueryPort(11200);
+        // Use default exponential backoff reconnect strategy
+        Main.config.setEnableCommunicationsLogging(true);
+        Main.config.setReconnectStrategy(ReconnectStrategy.exponentialBackoff());
         Main.query = new TS3Query(Main.config);
         Main.query.connect();
         Main.api = Main.query.getApi();

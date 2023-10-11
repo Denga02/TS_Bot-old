@@ -10,12 +10,12 @@ public class PublicLogger {
     private static final Handler consoleHandler = new ConsoleHandler();
     private static FileHandler fileHandler;
     private static String logFileName;
+    private static final int TIMER_FO_ONE_DAY = 24 * 60 * 60 * 1000;
 
     // 5 minutes = 300,000 milliseconds
     private static final long LOG_FILE_UPDATE_INTERVAL = 300000;
 
-    // 1 week = 7 days = 7 * 24 * 60 * 60 * 1000 milliseconds
-    private static final long CREATE_NEW_LOGFILE_INTERVAL = 7 * 24 * 60 * 60 * 1000;
+    private static final long CREATE_NEW_LOGFILE_INTERVAL = TIMER_FO_ONE_DAY;
 
     public static void configLogging() {
         configureLogger();
@@ -24,10 +24,10 @@ public class PublicLogger {
     }
 
     private static void configureLogger() {
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.ALL);
         logger.setUseParentHandlers(false);
 
-        consoleHandler.setLevel(Level.INFO);
+        consoleHandler.setLevel(Level.ALL);
         consoleHandler.setFormatter(new SimpleFormatter());
         logger.addHandler(consoleHandler);
     }

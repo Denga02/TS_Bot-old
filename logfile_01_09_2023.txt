@@ -1,6 +1,0 @@
-Sep 01, 2023 10:43:16 AM Load setup
-INFO: Bot is online
-Sep 01, 2023 10:44:16 AM Monitoring$2 run
-INFO: is active
-Sep 01, 2023 11:14:16 AM Monitoring$2 run
-INFO: is active
