@@ -41,7 +41,7 @@ public class Load {
         for (Client c : Main.api.getClients()) {
             if(!c.isServerQueryClient())
             {
-                Main.api.sendPrivateMessage(c.getId(),"Bot ist online");
+                //Main.api.sendPrivateMessage(c.getId(),"Bot ist online");
             }
         }
         logger.info("Bot is online");

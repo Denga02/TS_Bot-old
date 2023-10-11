@@ -12,6 +12,7 @@ public class Main {
     final public static TS3Config config = new TS3Config();
     public static TS3Query query;
     public static TS3Api api;
+    public static int SUPP_GROUP_ID = 4598207;
 
     public static void main(String[] args) {
         //random bot because of reconnection issues
@@ -20,11 +21,14 @@ public class Main {
         String nickname = "Clanbot" + randomNumber;
 
         //loading bot with a specific authentication
-        Load.conncetLocal(nickname);
-        //Load.conncetGib(nickname);
+        //Load.conncetLocal(nickname);
+        Load.conncetGib(nickname);
 
         //first setup, by starting the bot
         Load.setup();
+
+        //methods to manage the bot
+        Management.reboot();
 
         List<ServerGroup> channelGroups = Main.api.getServerGroups();
         for (ServerGroup group : channelGroups) {
@@ -36,18 +40,18 @@ public class Main {
         Monitoring.handleMessages();
 
         //method for afk mover
-        Mover.afkMover(false, null, 3, true, "AFK");
-        Mover.afkMover(true, "Willkommen", 1, false, "AFK");
+        Mover.afkMover(false, null, 3, true, "╚Irgendwann wieder da");
+        Mover.afkMover(true, "Willkommen", 1, false, "╚Irgendwann wieder da");
 
         //method for chatbot
         ChatBot.handleMessages();
 
         //method for user support
-        int [] serverGroupId = {9, 10, 11};
+        int [] serverGroupId = {SUPP_GROUP_ID};
         Support.load(api.getChannelByNameExact("Support", false).getId(), serverGroupId);
 
         //methods for event handler
-        EventHandler.notifyOnJoin("Support", 9);
+        EventHandler.notifyOnJoin("Support", SUPP_GROUP_ID);
     }
 
     //method to get channel name through channel ID
