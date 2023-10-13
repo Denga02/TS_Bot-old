@@ -1,38 +1,25 @@
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3Config;
 import com.github.theholywaffle.teamspeak3.TS3Query;
-import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
-import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
+import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Logger;
 
 public class Main {
+    private static final Logger logger = PublicLogger.getLogger();
     final public static TS3Config config = new TS3Config();
     public static TS3Query query;
     public static TS3Api api;
     public static int SUPP_GROUP_ID = 4598207;
 
-    public static void main(String[] args) {
-        //Das ist eine änderung
-        //random bot because of reconnection issues
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(100) + 1;
-        String nickname = "Clanbot" + randomNumber;
+    public static void main(String[] args) throws IOException {
 
-        //loading bot with a specific authentication
-        //Load.conncetLocal(nickname);
-        Load.conncetGib(nickname);
-
-        //first setup, by starting the bot
-        Load.setup();
-
-        List<ServerGroup> channelGroups = Main.api.getServerGroups();
-        for (ServerGroup group : channelGroups) {
-            System.out.println("Gruppenname: " + group.getName() + ", Gruppen-ID: " + group.getId());
-        }
+        //Connecting the query with the specific profile
+        Load.connectGib("Clanbot");
+        //Load.conncetLocal("Test");
 
         //method for Monitoring
         Monitoring.baseMonitoring();
@@ -63,6 +50,18 @@ public class Main {
         }
         //return null if the don´t find channel with this ID
         return null;
+    }
+
+    public static void MessageToAllClients(String Message) {
+
+        //loop through all clients except the query
+        for (Client c : Main.api.getClients()) {
+            if(!c.isServerQueryClient())
+            {
+                Main.api.sendPrivateMessage(c.getId(),Message);
+            }
+        }
+        logger.info("Send" + Message + " to all Clients");
     }
 }
 

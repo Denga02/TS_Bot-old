@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class ChatBot {
+    private static final Logger logger = PublicLogger.getLogger();
 
     public static void handleMessages() {
         // Get our own client ID by running the "whoami" command
@@ -22,10 +24,13 @@ public class ChatBot {
             public void onTextMessage(TextMessageEvent e) {
                 if (e.getTargetMode() == TextMessageTargetMode.CLIENT && e.getInvokerId() != clientId) {
                     String message = e.getMessage().toLowerCase();
+                    logger.info(message);
 
                     switch (message) {
                         case "!kevin":
-                            printKevin();
+                            logger.info(String.valueOf(Main.api.getClientInfo(clientId).getChannelId()));
+                            printKevin(Main.api.getClientInfo(e.getInvokerId()));
+                            logger.info(String.valueOf(Main.api.getClientInfo(clientId).getChannelId()));
                             break;
                         case "!steven":
                             printSteven();
@@ -52,6 +57,7 @@ public class ChatBot {
                             printChangeLog(e.getInvokerId());
                             break;
                         case "!online":
+                            System.out.println("bin in online");
                             printOnline(e.getInvokerId());
                         default:
                             Main.api.sendPrivateMessage(e.getInvokerId(), "Falscher Befehl! gebe !help ein, um alle Befehle einzusehen");
@@ -77,10 +83,10 @@ public class ChatBot {
                         """
                 );
             }
-            private void printKevin() {
+            private void printKevin(Client client) {
                 // loads variables from config.json
                 try {
-                    Configuration configuration = Configuration.load("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
+                    Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/import.json");
                     int counterKevin = configuration.getCounter().getKevin();
 
                     Configuration.CounterConfig counterConfig = configuration.getCounter();
@@ -89,9 +95,10 @@ public class ChatBot {
                     configuration.save("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
 
                     // Main contents of the method
-                    Main.api.sendChannelMessage("Kevin! Brünette mit fetten Hupen ist für dich unterwegs\n"
+                    Main.api.sendChannelMessage(client.getChannelId(), "Kevin! Brünette mit fetten Hupen ist für dich unterwegs\n"
                             + "Kevin war wieder rallig! Zum " + counterKevin + ". mal kam heute eine Nutte vorbei!");
-                } catch (IOException e) {
+
+                         } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
