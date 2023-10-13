@@ -16,6 +16,7 @@ public class Main {
     public static int SUPP_GROUP_ID = 4598207;
 
     public static void main(String[] args) {
+        //Das ist eine änderung
         //random bot because of reconnection issues
         Random rand = new Random();
         int randomNumber = rand.nextInt(100) + 1;
