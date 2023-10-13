@@ -41,6 +41,7 @@ public class Load {
 
     public static void conncetLocal(String botName) throws IOException {
         Main.config.setHost("127.0.0.1");
+        Main.config.setFloodRate(TS3Query.FloodRate.UNLIMITED);
         Main.query = new TS3Query(Main.config);
         Main.query.connect();
         Main.api = Main.query.getApi();

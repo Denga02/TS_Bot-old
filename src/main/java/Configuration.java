@@ -48,5 +48,6 @@ public class Configuration {
         public void setSteven(int steven) {
             this.steven = steven;
         }
+
     }
 }

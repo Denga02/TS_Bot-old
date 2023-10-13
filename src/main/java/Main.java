@@ -16,7 +16,7 @@ public class Main {
     public static int SUPP_GROUP_ID = 4598207;
 
     public static void main(String[] args) throws IOException {
-
+        System.out.println("Hello");
         //Connecting the query with the specific profile
         Load.connectGib("Clanbot");
         //Load.conncetLocal("Test");
@@ -61,7 +61,6 @@ public class Main {
                 Main.api.sendPrivateMessage(c.getId(),Message);
             }
         }
-        logger.info("Send" + Message + " to all Clients");
     }
 }
 

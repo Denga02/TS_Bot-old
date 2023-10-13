@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 public class ChatBot {
     private static final Logger logger = PublicLogger.getLogger();
+    private static boolean RecocnizedCommand = true;
 
     public static void handleMessages() {
         // Get our own client ID by running the "whoami" command
@@ -23,14 +24,20 @@ public class ChatBot {
             @Override
             public void onTextMessage(TextMessageEvent e) {
                 if (e.getTargetMode() == TextMessageTargetMode.CLIENT && e.getInvokerId() != clientId) {
-                    String message = e.getMessage().toLowerCase();
-                    logger.info(message);
+                    String command = e.getMessage().toLowerCase();
 
-                    switch (message) {
+                    //query change channel if is not in the same as the invoker
+                    if (Main.api.getClientInfo(clientId).getChannelId() != Main.api.getClientInfo(e.getInvokerId()).getChannelId()) {
+                        Main.api.moveQuery(Main.api.getClientInfo(e.getInvokerId()).getChannelId());
+                    }
+
+                    //set RecocnizedCommand before each passage of the Swicthes
+                    RecocnizedCommand = true;
+
+                    switch (command) {
                         case "!kevin":
-                            logger.info(String.valueOf(Main.api.getClientInfo(clientId).getChannelId()));
-                            printKevin(Main.api.getClientInfo(e.getInvokerId()));
-                            logger.info(String.valueOf(Main.api.getClientInfo(clientId).getChannelId()));
+                            printKevin();
+                            ChatBotLogger(e.getInvokerId(), command);
                             break;
                         case "!steven":
                             printSteven();
@@ -57,10 +64,17 @@ public class ChatBot {
                             printChangeLog(e.getInvokerId());
                             break;
                         case "!online":
-                            System.out.println("bin in online");
                             printOnline(e.getInvokerId());
+                            break;
                         default:
                             Main.api.sendPrivateMessage(e.getInvokerId(), "Falscher Befehl! gebe !help ein, um alle Befehle einzusehen");
+                            RecocnizedCommand = false;
+                    }
+
+                    if (RecocnizedCommand == true) {
+                        ChatBotLogger(e.getInvokerId(), command);
+                    } else {
+                        ChatBotLogger(e.getInvokerId(), "Falscher Befehl");
                     }
                 }
             }
@@ -83,20 +97,22 @@ public class ChatBot {
                         """
                 );
             }
-            private void printKevin(Client client) {
+            private void printKevin() {
                 // loads variables from config.json
                 try {
-                    Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/import.json");
+                    Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/config.json");
                     int counterKevin = configuration.getCounter().getKevin();
 
                     Configuration.CounterConfig counterConfig = configuration.getCounter();
-                    counterConfig.setSteven(counterConfig.getKevin() + 1);
+                    counterConfig.setKevin(counterConfig.getKevin() + 1);
                     configuration.setCounter(counterConfig);
-                    configuration.save("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
+                    configuration.save("/home/danny/IdeaProjects/TS_Bot/config.json");
 
                     // Main contents of the method
-                    Main.api.sendChannelMessage(client.getChannelId(), "Kevin! Brünette mit fetten Hupen ist für dich unterwegs\n"
-                            + "Kevin war wieder rallig! Zum " + counterKevin + ". mal kam heute eine Nutte vorbei!");
+                    Main.api.sendChannelMessage(
+                            "Kevin! Brünette mit fetten Hupen ist für dich unterwegs\n"
+                            + "Kevin war wieder rallig! Zum " + counterKevin + ". mal kam heute eine Nutte vorbei!"
+                    );
 
                          } catch (IOException e) {
                     e.printStackTrace();
@@ -104,16 +120,17 @@ public class ChatBot {
             }
             private void printSteven() {
                 try {
-                    Configuration configuration = Configuration.load("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
+                    Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/config.json");
                     int counterSteven = configuration.getCounter().getSteven();
 
                     Configuration.CounterConfig counterConfig = configuration.getCounter();
                     counterConfig.setSteven(counterConfig.getSteven() + 1);
                     configuration.setCounter(counterConfig);
-                    configuration.save("/home/ansible/IdeaProjects/TS_Bot/target/config.json");
+                    configuration.save("/home/danny/IdeaProjects/TS_Bot/config.json");
 
-                    Main.api.sendChannelMessage("Abgelehnt!!\n" +
-                            "Du bist der " + (counterSteven + 1) + ". der fragt...");
+                    Main.api.sendChannelMessage(
+                            "Abgelehnt!!\n" + "Du bist der " + (counterSteven + 1) + ". der fragt..."
+                    );
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -122,10 +139,15 @@ public class ChatBot {
                 for (Client c : Main.api.getClients()) {
                     if(!c.isServerQueryClient())
                     {
-                        Main.api.sendPrivateMessage(id,"User " + c.getNickname() + " is in channel "
-                                + Main.getChannelNameById(c.getChannelId()));
+                        Main.api.sendPrivateMessage(id,
+                                "User " + c.getNickname() + " is in channel "
+                                        + Main.getChannelNameById(c.getChannelId()));
                     }
                 }
+            }
+
+            private void ChatBotLogger(int InvokerID, String command) {
+                logger.info("ChatBot: User " + Main.api.getClientInfo(InvokerID).getNickname() + " activated " + command);
             }
         });
     }
