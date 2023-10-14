@@ -4,6 +4,7 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
+import org.w3c.dom.css.Counter;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,13 +32,12 @@ public class ChatBot {
                         Main.api.moveQuery(Main.api.getClientInfo(e.getInvokerId()).getChannelId());
                     }
 
-                    //set RecocnizedCommand before each passage of the Swicthes
+                    //set RecocnizedCommand true before each passage of the Swicthes
                     RecocnizedCommand = true;
 
                     switch (command) {
                         case "!kevin":
                             printKevin();
-                            ChatBotLogger(e.getInvokerId(), command);
                             break;
                         case "!steven":
                             printSteven();
@@ -71,7 +71,7 @@ public class ChatBot {
                             RecocnizedCommand = false;
                     }
 
-                    if (RecocnizedCommand == true) {
+                    if (RecocnizedCommand) {
                         ChatBotLogger(e.getInvokerId(), command);
                     } else {
                         ChatBotLogger(e.getInvokerId(), "Falscher Befehl");
@@ -79,25 +79,27 @@ public class ChatBot {
                 }
             }
             private void printHelp(int id) {
-                Main.api.sendPrivateMessage(id, """
+                Main.api.sendPrivateMessage(id,
+                        """
                         Überischt aller Befehle:
                         !help --> gibt eine Übersicht aller Befehle
                         !changelog --> übersicht, was im letzten update geändert wurde
-                        !online --> zeigt wer alles online ist und in was für einem Raum
-                        !kevin | !steven | !stefan | !chief | !karsten | !jonas --> nutzen auf eigene Gefahr"""
+                        !online --> zeigt wer alles online ist und in was für einem Raum sich dieser befindet
+                        !kevin | !steven | !stefan | !chief | !karsten | !jonas --> nutzen auf eigene Gefahr
+                        """
                 );
             }
             private void printChangeLog(int id) {
-                Main.api.sendPrivateMessage(id, """
-                        Version 1.4
-                        Code wurde gerefactored, dazu einige Bug fixes.
-                        Der Afk Mover gibt nun keine Warnung mehr aus und wird nach 20 Minuten den user in den Afk Raum moven
-                        Die funktionen des Chatbots sind wieder da. Für den Fall, dass Danny angezeigt wird statt der Bot,
-                        muss einmal in Willkommen connceten, um eine Nachricht vom Bot zu bekommen. An besseren MEthoden wird bereits gearbeitet
+                Main.api.sendPrivateMessage(id,
+                        """
+                        Version 2.1
+                        Bug fixes
+                        Chatbot Funktionen sind wieder aktiv
                         """
                 );
             }
             private void printKevin() {
+
                 // loads variables from config.json
                 try {
                     Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/config.json");
@@ -107,6 +109,8 @@ public class ChatBot {
                     counterConfig.setKevin(counterConfig.getKevin() + 1);
                     configuration.setCounter(counterConfig);
                     configuration.save("/home/danny/IdeaProjects/TS_Bot/config.json");
+
+
 
                     // Main contents of the method
                     Main.api.sendChannelMessage(
@@ -120,6 +124,7 @@ public class ChatBot {
             }
             private void printSteven() {
                 try {
+                    // loads v
                     Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/config.json");
                     int counterSteven = configuration.getCounter().getSteven();
 
@@ -129,7 +134,7 @@ public class ChatBot {
                     configuration.save("/home/danny/IdeaProjects/TS_Bot/config.json");
 
                     Main.api.sendChannelMessage(
-                            "Abgelehnt!!\n" + "Du bist der " + (counterSteven + 1) + ". der fragt..."
+                            "Abgelehnt!!\n" + "Du bist der " + (counterSteven) + ". der fragt..."
                     );
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -145,7 +150,6 @@ public class ChatBot {
                     }
                 }
             }
-
             private void ChatBotLogger(int InvokerID, String command) {
                 logger.info("ChatBot: User " + Main.api.getClientInfo(InvokerID).getNickname() + " activated " + command);
             }

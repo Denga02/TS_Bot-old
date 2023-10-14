@@ -14,9 +14,10 @@ public class Main {
     public static TS3Query query;
     public static TS3Api api;
     public static int SUPP_GROUP_ID = 4598207;
+    public static int NEW_USER_GROUP_ID = 4290234;
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello");
+
         //Connecting the query with the specific profile
         Load.connectGib("Clanbot");
         //Load.conncetLocal("Test");
@@ -33,11 +34,10 @@ public class Main {
         ChatBot.handleMessages();
 
         //method for user support
-        int [] serverGroupId = {SUPP_GROUP_ID};
-        Support.load(api.getChannelByNameExact("Support", false).getId(), serverGroupId);
+        Support.load(api.getChannelByNameExact("Support", false).getId(), SUPP_GROUP_ID);
 
         //methods for event handler
-        EventHandler.notifyOnJoin("Support", SUPP_GROUP_ID);
+        EventHandler.ClientConnect("Support", NEW_USER_GROUP_ID);
     }
 
     //method to get channel name through channel ID

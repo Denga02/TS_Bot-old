@@ -3,13 +3,19 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
-public class Support {
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Logger;
 
-    public static void load(int supportRoomId, int[] actorGroup) {
+public class Support {
+    final static int PERIOD_TIME = 10 * 1000;
+
+    public static void load(int supportRoomId, int actorGroup) {
         checkUserInSupport(supportRoomId, actorGroup);
+
     }
 
-    private static void checkUserInSupport(int supportRoomId, int[] actorGroup) {
+    private static void checkUserInSupport(int supportRoomId, int actorGroup) {
         Main.api.registerEvent(TS3EventType.CHANNEL, supportRoomId);
         Main.api.addTS3Listeners(new TS3EventAdapter() {
             @Override
@@ -25,19 +31,16 @@ public class Support {
         });
     }
 
-    private static boolean checkActorsOnline(int[] actorGroup) {
+    private static boolean checkActorsOnline(int actorGroup) {
         for (Client client : Main.api.getClients()) {
-            for (int group : actorGroup) {
-                if (client.isInServerGroup(group)) {
+                if (client.isInServerGroup(actorGroup)) {
                     return true;
-                }
             }
         }
         return false;
     }
 
     private static void notifyUserInSupport(int userId, boolean areActorsOnline) {
-        Client client = Main.api.getClientInfo(userId);
         if (areActorsOnline) {
             Main.api.pokeClient(userId, "Es wurden Leute aus der Leitung benachrichtigt!");
         } else {
@@ -45,14 +48,12 @@ public class Support {
         }
     }
 
-    private static void notifyActors(int userId, int[] actorGroup) {
-        Client client = Main.api.getClientInfo(userId);
+    private static void notifyActors(int userId, int actorGroup) {
         for (Client actor : Main.api.getClients()) {
-            for (int group : actorGroup) {
-                if (actor.isInServerGroup(group)) {
-                    Main.api.pokeClient(actor.getId(), "[URL=client://" + client.getChannelId() + "/" + client.getIp() + "]" + client.getNickname() + "[/URL] braucht Support!");
+                if (actor.isInServerGroup(actorGroup)) {
+                    System.out.println("Support wird benachrichtigt");
+                    //Main.api.pokeClient(actor.getId(), "[URL=client://" + client.getChannelId() + "/" + client.getIp() + "]" + client.getNickname() + "[/URL] braucht Support!");
                 }
-            }
         }
     }
 }
