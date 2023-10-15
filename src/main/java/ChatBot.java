@@ -66,6 +66,8 @@ public class ChatBot {
                         case "!online":
                             printOnline(e.getInvokerId());
                             break;
+                        case "!supp" :
+                            HandleSupp();
                         default:
                             Main.api.sendPrivateMessage(e.getInvokerId(), "Falscher Befehl! gebe !help ein, um alle Befehle einzusehen");
                             RecocnizedCommand = false;
@@ -152,6 +154,10 @@ public class ChatBot {
             }
             private void ChatBotLogger(int InvokerID, String command) {
                 logger.info("ChatBot: User " + Main.api.getClientInfo(InvokerID).getNickname() + " activated " + command);
+            }
+
+            private void HandleSupp() {
+                //
             }
         });
     }

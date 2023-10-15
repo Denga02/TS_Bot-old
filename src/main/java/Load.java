@@ -58,7 +58,7 @@ public class Load {
 
         PublicLogger.configLogging();
         //notify all CLients that bot is online
-        //Main.MessageToAllClients("Clanbot ist online");
+        Main.MessageToAllClients("Clanbot ist online");
 
         //print all Channels with their ID
         List<ServerGroup> channelGroups = Main.api.getServerGroups();

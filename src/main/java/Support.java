@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 public class Support {
     final static int PERIOD_TIME = 10 * 1000;
 
+
     public static void load(int supportRoomId, int actorGroup) {
         checkUserInSupport(supportRoomId, actorGroup);
 

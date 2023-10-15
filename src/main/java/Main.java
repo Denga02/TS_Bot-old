@@ -5,6 +5,7 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -61,6 +62,25 @@ public class Main {
                 Main.api.sendPrivateMessage(c.getId(),Message);
             }
         }
+    }
+    public static boolean CheckClientsInGroup(int groupId) {
+
+        for (Client c : Main.api.getClients()) {
+            if (c.isInServerGroup(groupId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static List<Client> getClientsFromSpecificGroup(int groupId) {
+        List<Client> list = new ArrayList<>();
+
+        for (Client c : Main.api.getClients()) {
+            if (c.isInServerGroup(groupId)) {
+                list.add(c);
+            }
+        }
+        return list;
     }
 }
 
