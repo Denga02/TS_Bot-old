@@ -1,8 +1,6 @@
-import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
 import com.github.theholywaffle.teamspeak3.api.event.ClientJoinEvent;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
-import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 
@@ -35,6 +33,8 @@ public class EventHandler {
         if (client.isInServerGroup(ServerGroup)) {
             Main.api.moveClient(client.getId(), channel.getId());
             logger.info("EventHandler: moved " + client.getNickname() + " to Room " + channel.getName());
+
+            Support.HandleSupportWithNoTimer(Main.api.getChannelByNameExact("Support", true), Main.SUPP_GROUP_ID, Main.NEW_USER_GROUP_ID);
         }
     }
 }

@@ -2,14 +2,9 @@ import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
-import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
-import org.w3c.dom.css.Counter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class ChatBot {
@@ -94,9 +89,8 @@ public class ChatBot {
             private void printChangeLog(int id) {
                 Main.api.sendPrivateMessage(id,
                         """
-                        Version 2.1
-                        Bug fixes
-                        Chatbot Funktionen sind wieder aktiv
+                        rebuild support
+                        added config file for counter
                         """
                 );
             }

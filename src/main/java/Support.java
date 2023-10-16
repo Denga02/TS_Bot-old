@@ -1,60 +1,44 @@
-import com.github.theholywaffle.teamspeak3.api.event.ClientMovedEvent;
-import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
-import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
-import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
+import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Logger;
 
 public class Support {
-    final static int PERIOD_TIME = 10 * 1000;
+    private static final Logger logger = PublicLogger.getLogger();
+    private static final String NO_ACTORS_ARE_ONLINE = "Zurzeit ist niemand vom Support online";
+    private static final String ACTORS_ARE_ONLINE = "Es wurden Leute aus Support benachrichtigt";
+    private static final String ACTOR_MESSAGE = "Es braucht jemand Support";
+    private static final int PERIOD_TIME = 10 *  60 * 1000;
+    private static final int DELAY_TIME = 0;
 
+    public static void HandleSupportWithTimer(Channel targetChannel, int actorGroupID, int targetGroupId) {
 
-    public static void load(int supportRoomId, int actorGroup) {
-        checkUserInSupport(supportRoomId, actorGroup);
-
-    }
-
-    private static void checkUserInSupport(int supportRoomId, int actorGroup) {
-        Main.api.registerEvent(TS3EventType.CHANNEL, supportRoomId);
-        Main.api.addTS3Listeners(new TS3EventAdapter() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
-            public void onClientMoved(ClientMovedEvent e) {
-                if (e.getTargetChannelId() == supportRoomId) {
-                    boolean areActorsOnline = checkActorsOnline(actorGroup);
-                    notifyUserInSupport(e.getClientId(), areActorsOnline);
-                    if (areActorsOnline) {
-                        notifyActors(e.getClientId(), actorGroup);
+            public void run() {
+                if (Main.CheckUserIsinChannel(targetChannel.getId())) {
+                    if (Main.CheckClientsInGroup(actorGroupID)) {
+                        Main.PokeClients(actorGroupID, ACTOR_MESSAGE);
                     }
                 }
             }
-        });
-    }
+        }, DELAY_TIME, PERIOD_TIME);
 
-    private static boolean checkActorsOnline(int actorGroup) {
-        for (Client client : Main.api.getClients()) {
-                if (client.isInServerGroup(actorGroup)) {
-                    return true;
+
+    }
+    public static void HandleSupportWithNoTimer(Channel targetChannel, int actorGroupID, int targetGroupId) {
+
+        if (Main.CheckUserIsinChannel(targetChannel.getId())) {
+            if (Main.CheckClientsInGroup(actorGroupID)) {
+                Main.PokeClients(targetGroupId, ACTORS_ARE_ONLINE);
+                Main.PokeClients(actorGroupID, ACTOR_MESSAGE);
+            } else {
+                Main.PokeClients(targetGroupId, NO_ACTORS_ARE_ONLINE);
             }
         }
-        return false;
+
     }
 
-    private static void notifyUserInSupport(int userId, boolean areActorsOnline) {
-        if (areActorsOnline) {
-            Main.api.pokeClient(userId, "Es wurden Leute aus der Leitung benachrichtigt!");
-        } else {
-            Main.api.pokeClient(userId, "Zurzeit ist keiner da, der dir helfen kann.");
-        }
-    }
-
-    private static void notifyActors(int userId, int actorGroup) {
-        for (Client actor : Main.api.getClients()) {
-                if (actor.isInServerGroup(actorGroup)) {
-                    System.out.println("Support wird benachrichtigt");
-                    //Main.api.pokeClient(actor.getId(), "[URL=client://" + client.getChannelId() + "/" + client.getIp() + "]" + client.getNickname() + "[/URL] braucht Support!");
-                }
-        }
-    }
 }

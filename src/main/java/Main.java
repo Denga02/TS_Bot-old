@@ -35,7 +35,7 @@ public class Main {
         ChatBot.handleMessages();
 
         //method for user support
-        Support.load(api.getChannelByNameExact("Support", false).getId(), SUPP_GROUP_ID);
+        Support.HandleSupportWithTimer(Main.api.getChannelByNameExact("Support", true), SUPP_GROUP_ID, NEW_USER_GROUP_ID);
 
         //methods for event handler
         EventHandler.ClientConnect("Support", NEW_USER_GROUP_ID);
@@ -52,6 +52,13 @@ public class Main {
         //return null if the don´t find channel with this ID
         return null;
     }
+
+/*
+###############################################################################################################################################################
+####                                                        selbst gebaute Funktionen                                                                       ###
+###############################################################################################################################################################
+
+ */
 
     public static void MessageToAllClients(String Message) {
 
@@ -81,6 +88,21 @@ public class Main {
             }
         }
         return list;
+    }
+    public static boolean CheckUserIsinChannel(int channelId) {
+        for ( Client c : Main.api.getClients()) {
+            if(c.getChannelId() == channelId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void PokeClients(int groupId, String message) {
+        for (Client c : Main.getClientsFromSpecificGroup(groupId)) {
+            Main.api.pokeClient(c.getId(), message);
+            logger.info("Support: " + message + " wurde an " + c.getNickname() + " gesendet");
+        }
     }
 }
 
