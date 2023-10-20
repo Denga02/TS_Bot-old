@@ -41,7 +41,6 @@ public class Load {
 
     public static void conncetLocal(String botName) throws IOException {
         Main.config.setHost("127.0.0.1");
-        Main.config.setFloodRate(TS3Query.FloodRate.UNLIMITED);
         Main.query = new TS3Query(Main.config);
         Main.query.connect();
         Main.api = Main.query.getApi();
@@ -58,7 +57,7 @@ public class Load {
 
         PublicLogger.configLogging();
         //notify all CLients that bot is online
-        Main.MessageToAllClients("Clanbot ist online");
+        //Main.MessageToAllClients("Clanbot ist online");
 
         //print all Channels with their ID
         List<ServerGroup> channelGroups = Main.api.getServerGroups();

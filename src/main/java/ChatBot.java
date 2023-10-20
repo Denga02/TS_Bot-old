@@ -9,11 +9,13 @@ import java.util.logging.Logger;
 
 public class ChatBot {
     private static final Logger logger = PublicLogger.getLogger();
-    private static boolean RecocnizedCommand = true;
+    private static boolean RecognizedCommand = true;
+    private static String FILE_PATH = "/opt/ts_bot/json_files/counter.json";
 
     public static void handleMessages() {
         // Get our own client ID by running the "whoami" command
         final int clientId = Main.api.whoAmI().getId();
+        System.out.println(Main.api.getClientInfo(clientId));
 
         Main.api.registerEvent(TS3EventType.TEXT_PRIVATE);
         Main.api.addTS3Listeners(new TS3EventAdapter() {
@@ -28,7 +30,7 @@ public class ChatBot {
                     }
 
                     //set RecocnizedCommand true before each passage of the Swicthes
-                    RecocnizedCommand = true;
+                    RecognizedCommand = true;
 
                     switch (command) {
                         case "!kevin":
@@ -65,10 +67,10 @@ public class ChatBot {
                             HandleSupp();
                         default:
                             Main.api.sendPrivateMessage(e.getInvokerId(), "Falscher Befehl! gebe !help ein, um alle Befehle einzusehen");
-                            RecocnizedCommand = false;
+                            RecognizedCommand = false;
                     }
 
-                    if (RecocnizedCommand) {
+                    if (RecognizedCommand) {
                         ChatBotLogger(e.getInvokerId(), command);
                     } else {
                         ChatBotLogger(e.getInvokerId(), "Falscher Befehl");
@@ -89,6 +91,7 @@ public class ChatBot {
             private void printChangeLog(int id) {
                 Main.api.sendPrivateMessage(id,
                         """
+                        Version 2.2
                         rebuild support
                         added config file for counter
                         """
@@ -98,13 +101,13 @@ public class ChatBot {
 
                 // loads variables from config.json
                 try {
-                    Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/config.json");
+                    Configuration configuration = Configuration.load(FILE_PATH);
                     int counterKevin = configuration.getCounter().getKevin();
 
                     Configuration.CounterConfig counterConfig = configuration.getCounter();
                     counterConfig.setKevin(counterConfig.getKevin() + 1);
                     configuration.setCounter(counterConfig);
-                    configuration.save("/home/danny/IdeaProjects/TS_Bot/config.json");
+                    configuration.save(FILE_PATH);
 
 
 
@@ -121,13 +124,13 @@ public class ChatBot {
             private void printSteven() {
                 try {
                     // loads v
-                    Configuration configuration = Configuration.load("/home/danny/IdeaProjects/TS_Bot/config.json");
+                    Configuration configuration = Configuration.load(FILE_PATH);
                     int counterSteven = configuration.getCounter().getSteven();
 
                     Configuration.CounterConfig counterConfig = configuration.getCounter();
                     counterConfig.setSteven(counterConfig.getSteven() + 1);
                     configuration.setCounter(counterConfig);
-                    configuration.save("/home/danny/IdeaProjects/TS_Bot/config.json");
+                    configuration.save(FILE_PATH);
 
                     Main.api.sendChannelMessage(
                             "Abgelehnt!!\n" + "Du bist der " + (counterSteven) + ". der fragt..."
