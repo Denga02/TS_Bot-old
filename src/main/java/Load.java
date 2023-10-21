@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 public class Load {
+    /*
     private static final Logger logger = PublicLogger.getLogger();
 
     static String HOST_GIB = "62.104.20.81";
@@ -66,4 +67,6 @@ public class Load {
         }
 
     }
+
+     */
 }

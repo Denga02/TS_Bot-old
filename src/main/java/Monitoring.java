@@ -1,3 +1,4 @@
+import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
@@ -10,15 +11,15 @@ import java.util.logging.Logger;
 
 public class Monitoring {
     private static final Logger logger = PublicLogger.getLogger();
-    public static void handleMessages() {
+    public static void handleMessages(TS3Api api) {
 
         // Get our own client ID by running the "whoami" command
-        final int clientId = Main.api.whoAmI().getId();
+        final int clientId = api.whoAmI().getId();
 
-        Main.api.registerEvent(TS3EventType.TEXT_PRIVATE);
+        api.registerEvent(TS3EventType.TEXT_PRIVATE);
 
         // Register the event listener
-        Main.api.addTS3Listeners(new TS3EventAdapter() {
+        api.addTS3Listeners(new TS3EventAdapter() {
 
             @Override
             public void onTextMessage(TextMessageEvent e) {
@@ -27,9 +28,9 @@ public class Monitoring {
                     String message = e.getMessage().toLowerCase();
 
                     if (message.equals("!ping")) {
-                        Main.api.moveQuery(Main.api.getClientInfo(clientId).getChannelId());
+                        api.moveQuery(api.getClientInfo(clientId).getChannelId());
                         // Answer "!ping" with "pong"
-                        Main.api.sendPrivateMessage(e.getInvokerId(), "pong");
+                        api.sendPrivateMessage(e.getInvokerId(), "pong");
                 }
             }
         }

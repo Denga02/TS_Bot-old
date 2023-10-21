@@ -1,3 +1,4 @@
+import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 
 import java.util.Timer;
@@ -12,15 +13,15 @@ public class Support {
     private static final int PERIOD_TIME = 10 *  60 * 1000;
     private static final int DELAY_TIME = 0;
 
-    public static void HandleSupportWithTimer(Channel targetChannel, int actorGroupID, int targetGroupId) {
+    public static void HandleSupportWithTimer(Channel targetChannel, int actorGroupID, int targetGroupId, TS3Api api) {
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (Main.CheckUserIsinChannel(targetChannel.getId())) {
-                    if (Main.CheckClientsInGroup(actorGroupID)) {
-                        Main.PokeClients(actorGroupID, ACTOR_MESSAGE);
+                if (Main.CheckUserIsinChannel(targetChannel.getId(), api)) {
+                    if (Main.CheckClientsInGroup(actorGroupID, api)) {
+                        Main.PokeClients(actorGroupID, ACTOR_MESSAGE, api);
                     }
                 }
             }
@@ -28,14 +29,14 @@ public class Support {
 
 
     }
-    public static void HandleSupportWithNoTimer(Channel targetChannel, int actorGroupID, int targetGroupId) {
+    public static void HandleSupportWithNoTimer(Channel targetChannel, int actorGroupID, int targetGroupId, TS3Api api) {
 
-        if (Main.CheckUserIsinChannel(targetChannel.getId())) {
-            if (Main.CheckClientsInGroup(actorGroupID)) {
-                Main.PokeClients(targetGroupId, ACTORS_ARE_ONLINE);
-                Main.PokeClients(actorGroupID, ACTOR_MESSAGE);
+        if (Main.CheckUserIsinChannel(targetChannel.getId(), api)) {
+            if (Main.CheckClientsInGroup(actorGroupID, api)) {
+                Main.PokeClients(targetGroupId, ACTORS_ARE_ONLINE, api);
+                Main.PokeClients(actorGroupID, ACTOR_MESSAGE, api);
             } else {
-                Main.PokeClients(targetGroupId, NO_ACTORS_ARE_ONLINE);
+                Main.PokeClients(targetGroupId, NO_ACTORS_ARE_ONLINE, api);
             }
         }
 
