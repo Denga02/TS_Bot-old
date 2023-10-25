@@ -20,8 +20,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         //Connecting the query with the specific profile
-        Load.connectGib("Clanbot");
-        //Load.conncetLocal("Test");
+        //Load.connectGib("Clanbot");
+        Load.conncetLocal("Test");
 
         //method for Monitoring
         Monitoring.baseMonitoring();

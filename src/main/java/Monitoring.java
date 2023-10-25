@@ -42,9 +42,14 @@ public class Monitoring {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                logger.info("is active");
+                if (Main.query.isConnected()) {
+                    logger.info("is active");
+                } else {
+                    logger.info("Bot ist disconnected");
+                    System.exit(0);
+                }
             }
-        }, 60*1000, 30*60*1000);
+        }, 0, 10*1000);
     }
 }
 
